@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: triton-inference-server
+  labels:
+    app: triton-inference-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: triton-inference-server
+  template:
+    metadata:
+      labels:
+        app: triton-inference-server
+    spec:
+      containers:
+      - name: tritonserver
+        image: nvcr.io/nvidia/tritonserver:24.07-py3-igpu
+        command: ["tritonserver"]
+        args: ["--model-control-mode=explicit", "--model-repository=/models"]
+        volumeMounts:
+        - name: model-repository
+          mountPath: /models
+        ports:
+        - containerPort: 8000
+          name: http
+        - containerPort: 8001
+          name: grpc
+        - containerPort: 8002
+          name: metrics
+        livenessProbe:
+          failureThreshold: 60
+          initialDelaySeconds: 600
+          periodSeconds: 5
+          httpGet:
+            path: /v2/health/live
+            port: http
+        readinessProbe:
+          failureThreshold: 60
+          initialDelaySeconds: 600
+          periodSeconds: 5
+          httpGet:
+            path: /v2/health/ready
+            port: http
+      volumes:
+      - name: model-repository
+        hostPath:
+          path: /home/dan/Code/nvidia-jetson-k8s/triton-server/model_repository
+          type: DirectoryOrCreate
