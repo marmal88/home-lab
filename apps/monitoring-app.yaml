@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: monitoring
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: 'https://github.com/marmal88/nvidia-jetson'
+    targetRevision: HEAD
+    # This path correctly points to the component's root, as intended.
+    path: components/monitoring
+  destination:
+    server: 'https://kubernetes.default.svc'
+    namespace: monitoring
+  syncPolicy:
+    automated: { prune: true, selfHeal: true }

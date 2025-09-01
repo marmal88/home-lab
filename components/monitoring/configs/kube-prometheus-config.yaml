@@ -1,0 +1,16 @@
+# --- Grafana --- #
+grafana:
+  service:
+    type: LoadBalancer
+
+# --- Prometheus --- #
+prometheus:
+  prometheusSpec:
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: local-path
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 2Gi 
