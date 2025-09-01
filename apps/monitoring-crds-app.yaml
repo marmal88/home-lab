@@ -1,20 +1,18 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: monitoring
+  name: monitoring-crds
   namespace: argocd
   annotations:
-    argocd.argoproj.io/sync-wave: "1"
+    argocd.argoproj.io/sync-wave: "0"
 spec:
   project: default
   source:
     repoURL: 'https://github.com/marmal88/nvidia-jetson'
     targetRevision: HEAD
-    # This path correctly points to the component's root, as intended.
-    path: components/monitoring
+    path: components/monitoring-crds
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: monitoring
   syncPolicy:
     automated: { prune: true, selfHeal: true }
-    syncOptions: ServerSideApply=True
