@@ -12,6 +12,8 @@ prometheus-node-exporter:
   enabled: false
 prometheus-operator:
   enabled: false
+kubeDns:
+  enabled: false
 
 # Disable the creation of default rules and servicemonitors
 defaultRules:
