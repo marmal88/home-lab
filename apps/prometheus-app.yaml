@@ -10,10 +10,12 @@ spec:
   source:
     repoURL: 'https://github.com/marmal88/nvidia-jetson'
     targetRevision: HEAD
-    path: components/monitoring
+    path: components/prometheus
   destination:
     server: 'https://kubernetes.default.svc'
     namespace: monitoring
   syncPolicy:
     automated: { prune: true, selfHeal: true }
-    syncOptions: ServerSideApply=True
+    syncOptions: 
+      - ServerSideApply=true
+      - CreateNamespace=true
