@@ -1,0 +1,19 @@
+service:
+  type: LoadBalancer
+
+datasources:
+  datasources.yaml:
+    apiVersion: 1
+    datasources:
+      - name: Prometheus
+        type: prometheus
+        url: http://prometheus-server.monitoring.svc.cluster.local
+        access: proxy
+        isDefault: true
+
+dashboards:
+  default:
+    kubernetes-cluster:
+      gnetId: 15757
+      revision: 11
+      datasource: Prometheus
